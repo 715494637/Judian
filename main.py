@@ -170,8 +170,7 @@ class Judian:
             res = requests.get("http://111.230.160.82/user/fund/getFund",headers=self.headers)
             j = res.json()
             return j["data"]["quantity"]
-        
-        return {
+        info =  {
             "account": baseInfo()["account"],
             "passWord":passWord,
             "id":baseInfo()["id"],
@@ -180,6 +179,10 @@ class Judian:
             "quantity":quantity(),
             "accessToken":self.accessToken,
         }
+        if self.expireTime:
+            info["expireTime"]= self.expireTime
+        
+        return info
         
     def getad(self)->json:
         url = "http://111.230.160.82/advert/info/getAdvert"
@@ -190,7 +193,7 @@ class Judian:
         response = requests.post(url, headers=self.headers, data=data)
         return response.json()
     
-    def extract_advert_info(ads:json)->list[dict]:
+    def extract_advert_info(self,ads:json)->list[dict]:
         advert_info_list = []
         if ads.get('success') and 'data' in ads:
             for datum in ads['data']:
@@ -228,44 +231,46 @@ class dataBase:
         beijing_time = utc_now + timedelta(hours=8)
         return beijing_time.strftime('%Y-%m-%d')
     
-    
-    def GetRadomToken(self,):
+    def GetRadomToken(self):
         tokenPool = []
         res = (
         self.supabase
         .table("Judian-Accounts")
         .select("account,passWord,expireTime,accessToken")
+        .order("quantity", desc=True)
         .execute()
-        )
+        ).data
+
         time_format = '%Y-%m-%d %H:%M:%S'
-        given_time = datetime.strptime(res["expireTime"], time_format)
         utc_now = datetime.now(timezone.utc)
         beijing_time = utc_now + timedelta(hours=8)
         for info in res:
+            given_time = datetime.strptime(info["expireTime"], time_format).replace(tzinfo=timezone.utc) + timedelta(hours=8)
             if beijing_time < given_time:
                 tokenPool.append(info["accessToken"])
             else:
                 judian = Judian()
-                judian.login(info["account"],info["passWord"])[""]
+                judian.login(info["account"],info["passWord"])
                 info = judian.getInfo()
                 self.upsertAcc(info)
                 tokenPool.append(judian.accessToken)
                 print("更新cookie成功---"+info["account"])
         return tokenPool
-        
-    
     def upsertAcc(self,info:json,NewAcc:bool=False,InviteAcc:bool=False):
         if NewAcc:
             info["lastInvited"] = ""
         if InviteAcc:
             info["lastInvited"] = self.GetFormatedTime()
-            
-        return (
+            data =  (
             self.supabase
             .table("Judian-Accounts")
             .upsert(info)
             .execute()
-            )
+            ).data
+            print(data)
+            return data
+         
+
 
     def getInviteCode(self)->str:
             return (
@@ -273,10 +278,9 @@ class dataBase:
             .table("Judian-Accounts")
             .select("inviteCode")
             .neq("lastInvited",dataBase.GetFormatedTime())
-            .order("quantity", ascending=False)
-            .execute()[0]
-            .inviteCode
-            )
+            .order("quantity", desc=True)
+            .execute()
+            ).data[0]['inviteCode']
     
     # def selectAccByCode(self,inviteCode:str):
     #     return(
@@ -294,7 +298,7 @@ def CompleteTasks(account:str,accessToken:str,NewAcc:bool=False,InviteAcc=False)
     print(f"{account}---获取到---{len(advert_info_list)}条广告")
     # 帮我subimit
     for item in advert_info_list:
-        res = judian.submit(accessToken,item['advertNo'], item['costModel'], item['platformCode'], item['platformId'], item['spaceId'], item['typeId'])
+        res = judian.submit(item['advertNo'], item['costModel'], item['platformCode'], item['platformId'], item['spaceId'], item['typeId'])
         if(res.status_code==200):
             print(f"{account}---提交广告成功---{item['advertNo']}")
         else:
@@ -302,6 +306,7 @@ def CompleteTasks(account:str,accessToken:str,NewAcc:bool=False,InviteAcc=False)
         time.sleep(4)
     info = judian.getInfo()
     print(db.upsertAcc(info,NewAcc,InviteAcc))
+    print(f"{account}---数据库更新账号成功")
 
 # def UpdateInviteAcc(inviteCode:str):
 #     db = dataBase()
@@ -317,11 +322,12 @@ def RegistThread(inviteCode:str = None):
     account =  register.getAccount()
     if not inviteCode:
         inviteCode = db.getInviteCode()
-
-    if Judian.sendcode(account)["code"] == 200:
+    res = Judian.sendcode(account).json()
+    if res["code"] == 200:
         print(account + "---发送验证码成功")
     else:
-        print(account + "---发送验证码失败")
+        print(account + "---发送验证码失败\n"+str(res))
+        return
     id = False
     while not id:
         print(account + "---正在获取邮件中")
@@ -333,6 +339,7 @@ def RegistThread(inviteCode:str = None):
     print(account + "---获取到token："+ tkInfo["accessToken"]+"\n有效期至---"+tkInfo["expireTime"])
     info = judian.getInfo()
     db.upsertAcc(info,NewAcc=True)
+    print(account + "---数据库新增账号成功")
     CompleteTasks(account,tkInfo["accessToken"],NewAcc=True)
     # 更新Invited账号待添加
 
@@ -362,7 +369,8 @@ def run_multiple_Regist(num_accounts,inviteCode=None):
 
 if __name__ == "__main__":
     num_accounts = 1  # 设置要运行的账号数量
-    run_multiple_Regist(num_accounts,defualtInvitedCode)
+    b = dataBase()
+    run_multiple_Regist(num_accounts)
 
 
 
