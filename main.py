@@ -122,6 +122,7 @@ class Judian:
         }
 
     def regist(self,account:str,code:str,inviteCode:str):
+        
         url = "http://111.230.160.82/user/login"
         data = {
             "account": account,
@@ -136,6 +137,14 @@ class Judian:
         self.expireTime = response.json()["data"]["expireTime"]
         self.accessToken = response.json()["data"]["accessToken"]
         self.headers["Authorization"] = f"Bearer {self.accessToken}"
+        def setPassWord():
+            url = "http://111.230.160.82/user/setPassword"
+            data = {
+                "newPassword":passWord,
+                "confirmPassword":passWord
+            }
+            res = requests.post(url,headers=self.headers,data=data)
+        setPassWord()
         return {
             "expireTime":self.expireTime,
             "accessToken":self.accessToken
@@ -180,7 +189,9 @@ class Judian:
             "accessToken":self.accessToken,
         }
         if self.expireTime:
-            info["expireTime"]= self.expireTime
+            info["expireTime"] = self.expireTime
+        if self.code:
+            info["passWord"] = self.code
         
         return info
         
@@ -261,14 +272,13 @@ class dataBase:
             info["lastInvited"] = ""
         if InviteAcc:
             info["lastInvited"] = self.GetFormatedTime()
-            data =  (
+        data =  (
             self.supabase
             .table("Judian-Accounts")
             .upsert(info)
             .execute()
             ).data
-            print(data)
-            return data
+        return data
          
 
 
@@ -282,12 +292,14 @@ class dataBase:
             .execute()
             ).data[0]['inviteCode']
     
-    # def selectAccByCode(self,inviteCode:str):
-    #     return(
-    #         self.supabase
-    #         .table("Judian-Accounts")
-    #         .select("inviteCode")
-    #     )
+    def updateLastInvitedByCode(self, inviteCode: str):
+        return (
+            self.supabase
+            .table("Judian-Accounts")
+            .update({"lastInvited": self.GetFormatedTime()})
+            .eq("inviteCode", inviteCode)
+            .execute()
+        ).data
    
 
 def CompleteTasks(account:str,accessToken:str,NewAcc:bool=False,InviteAcc=False):
@@ -300,6 +312,7 @@ def CompleteTasks(account:str,accessToken:str,NewAcc:bool=False,InviteAcc=False)
     for item in advert_info_list:
         res = judian.submit(item['advertNo'], item['costModel'], item['platformCode'], item['platformId'], item['spaceId'], item['typeId'])
         if(res.status_code==200):
+            print(res.text)
             print(f"{account}---提交广告成功---{item['advertNo']}")
         else:
             print(f"{account}---提交广告失败---{str(res.json())}")
@@ -322,6 +335,7 @@ def RegistThread(inviteCode:str = None):
     account =  register.getAccount()
     if not inviteCode:
         inviteCode = db.getInviteCode()
+        print(account+"---使用数据库邀请码---"+inviteCode)
     res = Judian.sendcode(account).json()
     if res["code"] == 200:
         print(account + "---发送验证码成功")
@@ -341,6 +355,10 @@ def RegistThread(inviteCode:str = None):
     db.upsertAcc(info,NewAcc=True)
     print(account + "---数据库新增账号成功")
     CompleteTasks(account,tkInfo["accessToken"],NewAcc=True)
+    print("更新lastInvited成功")
+    print(db.updateLastInvitedByCode(inviteCode))
+    
+
     # 更新Invited账号待添加
 
     # for _ in range(25):
@@ -369,8 +387,8 @@ def run_multiple_Regist(num_accounts,inviteCode=None):
 
 if __name__ == "__main__":
     num_accounts = 1  # 设置要运行的账号数量
-    b = dataBase()
     run_multiple_Regist(num_accounts)
+    # print((Judian.sendcode("123abcc@nqmo.com")).json())
 
 
 
