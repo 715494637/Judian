@@ -6,7 +6,8 @@ import time
 import random
 import re
 import threading
-from supabase import create_client, Client
+from supabase import create_client
+from fake_useragent import UserAgent
 
 url = "https://gsqhzvncrktdbnajsyxj.supabase.co"
 key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdzcWh6dm5jcmt0ZGJuYWpzeXhqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcxMTAzNTk4OCwiZXhwIjoyMDI2NjExOTg4fQ.wgUq0pfO9TcdQS2fwDVaE3WTAbLp7s0M-6dqJmmEux8"
@@ -80,7 +81,7 @@ class Judian:
         self.expireTime = ""
         self.accessToken = accessToken
         self.headers = {
-            "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 14; PGT-AN10 Build/HONORPGT-AN10)",
+            "User-Agent": UserAgent().random,
             "App-Version": "2.0.3",
             "App-Number": "47bfa06b90ad4174",
             "Content-Type": "application/json; charset=utf-8",
@@ -190,8 +191,6 @@ class Judian:
         }
         if self.expireTime:
             info["expireTime"] = self.expireTime
-        if self.code:
-            info["passWord"] = self.code
         
         return info
         
@@ -210,7 +209,7 @@ class Judian:
             for datum in ads['data']:
                 if 'adverts' in datum:
                     for advert in datum['adverts']:
-                        if 'advertNo' in advert and 'costModel' in advert:
+                        if advert['platformCode']:
                             advert_info_list.append({
                                 'advertNo': advert['advertNo'],
                                 'costModel': advert['costModel'],
@@ -387,7 +386,8 @@ def run_multiple_Regist(num_accounts,inviteCode=None):
 
 if __name__ == "__main__":
     num_accounts = 1  # 设置要运行的账号数量
-    run_multiple_Regist(num_accounts)
+    CompleteTasks("d715494637@163.con","eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjk2MzUyLCJBcHAtTnVtYmVyIjoiNDdiZmEwNmI5MGFkNDE3NCIsImlhdCI6MTczNDE4MDg2NywibmJmIjoxNzM0MTgwODY3LCJleHAiOjE3MzU0NzY4Njd9.CF6R5VSAz2Er32SuqDCR7ajBoCC4ijXoNVrTnxMYgDo")
+    # run_multiple_Regist(num_accounts)
     # print((Judian.sendcode("123abcc@nqmo.com")).json())
 
 
