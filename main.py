@@ -15,6 +15,7 @@ defualtInvitedCode = "USND7YZDRX"
 defualtToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjk2MzUyLCJBcHAtTnVtYmVyIjoiNDdiZmEwNmI5MGFkNDE3NCIsImlhdCI6MTczNDA1OTg4MSwibmJmIjoxNzM0MDU5ODgxLCJleHAiOjE3MzUzNTU4ODF9.3Whaz8-DtoS1LAThoTl9TpDoOk94UOFV3-sXdIcCLMs"
 passWord = "dddd1111"
 
+
 class Register:
     def __init__(self) -> None:
         self.acc = ""
@@ -77,9 +78,10 @@ class Register:
      
 class Judian:
 
-    def __init__(self, accessToken  = False) -> None:
+    def __init__(self, accessToken  = "") -> None:
         self.expireTime = ""
         self.accessToken = accessToken
+        self.proxy = ""
         self.headers = {
             "User-Agent": UserAgent().random,
             "App-Version": "2.0.3",
@@ -91,7 +93,17 @@ class Judian:
         }
         if self.accessToken:
             self.headers["Authorization"] = f"Bearer {self.accessToken}"
+        self.getProxy()
 
+    def getProxy(self):
+        url = "https://raw.githubusercontent.com/MuRongPIG/Proxy-Master/refs/heads/main/socks5_checked.txt"
+        response = requests.get(url)
+        p = random.choice(response.text.split("\n"))
+        self.proxy = {
+            "http": f"socks5://{p}",
+            "https": f"socks5://{p}"
+        }
+        print(self.proxy)
     @staticmethod
     def sendcode(account:str):
         url = "http://111.230.160.82/user/emailSend"
@@ -132,9 +144,8 @@ class Judian:
             "inviteCode": inviteCode,
             "type": 1
         }
-        data = json.dumps(data, separators=(',', ':'))
+        
         response = requests.post(url, headers=self.headers, data=data)
-        print(response.json())
         self.expireTime = response.json()["data"]["expireTime"]
         self.accessToken = response.json()["data"]["accessToken"]
         self.headers["Authorization"] = f"Bearer {self.accessToken}"
@@ -144,8 +155,9 @@ class Judian:
                 "newPassword":passWord,
                 "confirmPassword":passWord
             }
-            res = requests.post(url,headers=self.headers,data=data)
-        setPassWord()
+            data = json.dumps(data, separators=(',', ':'))
+            return requests.post(url,headers=self.headers,data=data)
+        print(setPassWord().json())
         return {
             "expireTime":self.expireTime,
             "accessToken":self.accessToken
@@ -241,7 +253,14 @@ class dataBase:
         beijing_time = utc_now + timedelta(hours=8)
         return beijing_time.strftime('%Y-%m-%d')
     
-    def GetRadomToken(self):
+    def GetAllToken(self):
+        def tokenValid(t_str): 
+            target = datetime.strptime(t_str, "%Y-%m-%d %H:%M:%S")
+            offset = 8 * 3600
+            t_ts = time.mktime(target.timetuple()) + offset
+            now_ts = time.time() - (time.timezone if (time.daylight == 0) else time.altzone) + offset
+            return now_ts < t_ts
+        
         tokenPool = []
         res = (
         self.supabase
@@ -250,46 +269,38 @@ class dataBase:
         .order("quantity", desc=True)
         .execute()
         ).data
-
-        time_format = '%Y-%m-%d %H:%M:%S'
-        utc_now = datetime.now(timezone.utc)
-        beijing_time = utc_now + timedelta(hours=8)
         for info in res:
-            given_time = datetime.strptime(info["expireTime"], time_format).replace(tzinfo=timezone.utc) + timedelta(hours=8)
-            if beijing_time < given_time:
-                tokenPool.append(info["accessToken"])
-            else:
+            if not tokenValid(info["expireTime"]):
                 judian = Judian()
                 judian.login(info["account"],info["passWord"])
                 info = judian.getInfo()
                 self.upsertAcc(info)
-                tokenPool.append(judian.accessToken)
                 print("更新cookie成功---"+info["account"])
+            tokenPool.append({info["account"],info["accessToken"]})
         return tokenPool
-    def upsertAcc(self,info:json,NewAcc:bool=False,InviteAcc:bool=False):
+    def upsertAcc(self,info:json,NewAcc:bool=False):
         if NewAcc:
             info["lastInvited"] = ""
-        if InviteAcc:
-            info["lastInvited"] = self.GetFormatedTime()
         data =  (
             self.supabase
             .table("Judian-Accounts")
             .upsert(info)
             .execute()
             ).data
-        return data
-         
-
-
-    def getInviteCode(self)->str:
-            return (
+        return data     
+    def getInviteCode(self) -> str:
+        result = (
             self.supabase
             .table("Judian-Accounts")
             .select("inviteCode")
-            .neq("lastInvited",dataBase.GetFormatedTime())
+            .neq("lastInvited", dataBase.GetFormatedTime())
             .order("quantity", desc=True)
+            .limit(1)
+            .single()
             .execute()
-            ).data[0]['inviteCode']
+        ).data
+        return result['inviteCode']
+        
     
     def updateLastInvitedByCode(self, inviteCode: str):
         return (
@@ -301,40 +312,37 @@ class dataBase:
         ).data
    
 
-def CompleteTasks(account:str,accessToken:str,NewAcc:bool=False,InviteAcc=False):
+
+def CompleteTasks(account:str,accessToken:str):
     db = dataBase()
     judian = Judian(accessToken)
-    ads = judian.getad()
-    advert_info_list = judian.extract_advert_info(ads)
-    print(f"{account}---获取到---{len(advert_info_list)}条广告")
-    # 帮我subimit
-    for item in advert_info_list:
-        res = judian.submit(item['advertNo'], item['costModel'], item['platformCode'], item['platformId'], item['spaceId'], item['typeId'])
-        if(res.status_code==200):
-            print(res.text)
-            print(f"{account}---提交广告成功---{item['advertNo']}")
-        else:
-            print(f"{account}---提交广告失败---{str(res.json())}")
-        time.sleep(4)
+    # 循环两次
+    for i in range(2):
+        ads = judian.getad()
+        advert_info_list = judian.extract_advert_info(ads)
+        print(f"{account}---获取到---{len(advert_info_list)}条广告")
+        # 帮我subimit
+        for item in advert_info_list:
+            res = judian.submit(item['advertNo'], item['costModel'], item['platformCode'], item['platformId'], item['spaceId'], item['typeId'])
+            if(res.status_code==200):
+                print(res.text)
+                print(f"{account}---提交广告成功---{item['advertNo']}")
+            else:
+                print(f"{account}---提交广告失败---{str(res.json())}")
+            time.sleep(3)
     info = judian.getInfo()
-    print(db.upsertAcc(info,NewAcc,InviteAcc))
+    print(db.upsertAcc(info,False))
     print(f"{account}---数据库更新账号成功")
 
 # def UpdateInviteAcc(inviteCode:str):
 #     db = dataBase()
 #     judian = Judian()
 
-    
-
-
-def RegistThread(inviteCode:str = None):
+def RegistThread(inviteCode:str):
     db = dataBase()
     register = Register()
     judian = Judian()
     account =  register.getAccount()
-    if not inviteCode:
-        inviteCode = db.getInviteCode()
-        print(account+"---使用数据库邀请码---"+inviteCode)
     res = Judian.sendcode(account).json()
     if res["code"] == 200:
         print(account + "---发送验证码成功")
@@ -353,9 +361,8 @@ def RegistThread(inviteCode:str = None):
     info = judian.getInfo()
     db.upsertAcc(info,NewAcc=True)
     print(account + "---数据库新增账号成功")
-    CompleteTasks(account,tkInfo["accessToken"],NewAcc=True)
-    print("更新lastInvited成功")
-    print(db.updateLastInvitedByCode(inviteCode))
+    # CompleteTasks(account,tkInfo["accessToken"],NewAcc=True)
+
     
 
     # 更新Invited账号待添加
@@ -369,30 +376,42 @@ def RegistThread(inviteCode:str = None):
     #     time.sleep(4)
 
 
-def DateBaseThread():
-    pass
-
-
-
 def run_multiple_Regist(num_accounts,inviteCode=None):
+    inviteCode = db.getInviteCode()
+    print("---使用数据库邀请码---"+inviteCode)
     threads = []
     for _ in range(num_accounts):
         thread = threading.Thread(target=RegistThread,args=(inviteCode,))
         threads.append(thread)
         thread.start()
-
     for thread in threads:
         thread.join()
+    
+    print(db.updateLastInvitedByCode(inviteCode))
+    print("更新lastInvited成功")
+
+def run_multiple_Task():
+    db = dataBase()
+    pool = db.GetAllToken()
+    for info in pool:
+        CompleteTasks(info["account"],info["accessToken"])
+    
+
 
 if __name__ == "__main__":
     num_accounts = 1  # 设置要运行的账号数量
-    CompleteTasks("d715494637@163.con","eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjk2MzUyLCJBcHAtTnVtYmVyIjoiNDdiZmEwNmI5MGFkNDE3NCIsImlhdCI6MTczNDE4MDg2NywibmJmIjoxNzM0MTgwODY3LCJleHAiOjE3MzU0NzY4Njd9.CF6R5VSAz2Er32SuqDCR7ajBoCC4ijXoNVrTnxMYgDo")
+    # db = dataBase()
+    judian = Judian()
+
+    # h= CompleteTasks("7171","eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjk2MzUyLCJBcHAtTnVtYmVyIjoiNDdiZmEwNmI5MGFkNDE3NCIsImlhdCI6MTczNDE4MDg2NywibmJmIjoxNzM0MTgwODY3LCJleHAiOjE3MzU0NzY4Njd9.CF6R5VSAz2Er32SuqDCR7ajBoCC4ijXoNVrTnxMYgDo")
+    # h.createConnect()
     # run_multiple_Regist(num_accounts)
     # print((Judian.sendcode("123abcc@nqmo.com")).json())
 
 
 
  
+
 
 
 
