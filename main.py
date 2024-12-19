@@ -424,8 +424,6 @@ def RegistThread(inviteCode:str):
     info = judian.getInfo()
     db.upsertAcc(info)
     print(account + "---数据库新增账号成功")
-    print(db.updateLastInvitedByCode(inviteCode))
-    print("更新lastInvited成功")
     return 
 
 
@@ -455,9 +453,8 @@ def run_multiple_Regist(num_accounts):
         thread.start()
     for thread in threads:
         thread.join()
-    
-    # print(db.updateLastInvitedByCode(inviteCode))
-    # print("更新lastInvited成功")
+    print(db.updateLastInvitedByCode(inviteCode))
+    print("更新lastInvited成功")
 
 def run_multiple_Task():
     db = dataBase()
