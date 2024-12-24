@@ -375,6 +375,8 @@ class dataBase:
 def CompleteTasks(account:str,accessToken:str):
     db = dataBase()
     judian = Judian(accessToken)
+    if account== "d715494637@163.com":
+        judian.headers["App-Number"]="47bfa06b90ad4174"
     # print(f"{account}---本次使用代理：{judian.proxy["https"]}")
     # 循环两次
     for _ in range(2):
