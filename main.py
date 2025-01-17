@@ -139,6 +139,9 @@ class Judian:
         response = requests.post(url, headers=self.headers, data=data)
         res = response.json()
         if not res["data"]:
+            if res["code"] == 300:
+                dataBase().deleteAcc(account)
+                print(account + "---账号被封")
             return False
         self.expireTime = res["data"]["expireTime"]
         self.accessToken = res["data"]["accessToken"]
@@ -279,13 +282,13 @@ class dataBase:
         beijing_time = utc_now + timedelta(hours=8)
         return beijing_time.strftime('%Y-%m-%d')
     def deleteAcc(self,account:str):
-        (
+        return(
         self.supabase
         .table("Judian-Accounts")
         .delete()
         .eq("account", account)
         .execute()
-        )
+        ).data
 
     def process_account(self, info):
         judian = Judian()
@@ -476,7 +479,8 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         function_name = sys.argv[1]
         if function_name == 'regist':
-            run_multiple_Regist(5)
+            while True:
+                run_multiple_Regist(5)
         elif function_name == 'task':
             run_multiple_Task()
         elif function_name == 'update':
