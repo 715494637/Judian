@@ -138,10 +138,7 @@ class Judian:
         data = json.dumps(data, separators=(',', ':'))
         response = requests.post(url, headers=self.headers, data=data)
         res = response.json()
-        if not res["data"]:
-            if res["code"] == 300:
-                dataBase().deleteAcc(account)
-                print(account + "---账号被封")
+        if not res["data"] or res["code"] == 300:
             return False
         self.expireTime = res["data"]["expireTime"]
         self.accessToken = res["data"]["accessToken"]
@@ -217,6 +214,8 @@ class Judian:
             res = requests.get("http://111.230.160.82/user/fund/getFund",headers=self.headers)
             j = res.json()
             return j["data"]["quantity"]
+        if not baseInfo()["account"]:
+            return False
         info =  {
             "account": baseInfo()["account"],
             "passWord":passWord,
@@ -294,7 +293,7 @@ class dataBase:
         judian = Judian()
         if not judian.login(info["account"], info["passWord"]):
             self.deleteAcc(info["account"])
-            print("删除未知账号---" + info["account"])
+            print("删除封禁账号---" + info["account"])
             return None
         info = judian.getInfo()
         self.upsertAcc(info)
@@ -351,7 +350,8 @@ class dataBase:
             ).data
         return data     
     def getInviteCode(self) -> str:
-        result = (
+        try:
+            result = (
             self.supabase
             .table("Judian-Accounts")
             .select("inviteCode")
@@ -361,7 +361,10 @@ class dataBase:
             .single()
             .execute()
         ).data
-        return result['inviteCode']
+            return result["inviteCode"]
+        except Exception :
+            return "USND7YZDRX"
+      
         
     
     def updateLastInvitedByCode(self, inviteCode: str):
@@ -392,8 +395,11 @@ def CompleteTasks(account:str,accessToken:str):
                 print(f"{account}---提交广告成功---{item['advertNo']}")
             else:
                 print(f"{account}---提交广告失败---{str(res.json())}")
-            time.sleep(3)
+            time.sleep(10)
     info = judian.getInfo()
+    if not info:
+        dataBase().deleteAcc(account)
+        print(f"{account}---账号已封禁")
     print(db.upsertAcc(info))
     print(f"{account}---数据库更新账号成功")
 
@@ -412,11 +418,11 @@ def RegistThread(inviteCode:str):
     else:
         print(account + "---发送验证码失败\n"+str(res))
         return
-    id = False
     while not id:
         print(account + "---正在获取邮件中")
         id = register.getId(account)
-        time.sleep(5)
+    id = False
+    time.sleep(5)
     code = register.getCode(account,id)
     print(account + "---获取到验证码："+ code)
     tkInfo = judian.regist(account,code,inviteCode)
