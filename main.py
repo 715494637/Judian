@@ -485,8 +485,8 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         function_name = sys.argv[1]
         if function_name == 'regist':
-            while True:
-                run_multiple_Regist(5)
+
+            run_multiple_Regist(5)
         elif function_name == 'task':
             run_multiple_Task()
         elif function_name == 'update':
