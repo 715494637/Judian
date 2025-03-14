@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         10086响应解密脚本
 // @namespace    http://tampermonkey.net/
-// @version      0.4
+// @version      0.5
 // @description  解密10086 APP响应数据，支持多请求查看和管理，可调整界面大小
 // @author       op要喝op奶
 // @updateURL    https://raw.githubusercontent.com/715494637/Judian/refs/heads/main/%E7%A7%BB%E5%8A%A8/Decypter.js
