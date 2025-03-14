@@ -112,6 +112,70 @@
             z-index: 10000;
         `;
 
+        // 创建确认对话框
+        const confirmDialog = document.createElement("div");
+        confirmDialog.id = "decrypt-confirm-dialog";
+        confirmDialog.style.cssText = `
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10005;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        `;
+
+        const confirmContent = document.createElement("div");
+        confirmContent.style.cssText = `
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        `;
+
+        confirmContent.innerHTML = `
+            <div style="font-size: 18px; font-weight: bold; margin-bottom: 15px; color: #333;">
+                确认清空数据
+            </div>
+            <div style="color: #666; margin-bottom: 20px; line-height: 1.5;">
+                确定要清空所有解密记录吗？此操作不可恢复。
+            </div>
+            <div style="display: flex; justify-content: center; gap: 10px;">
+                <button id="decrypt-confirm-cancel" style="
+                    padding: 8px 20px;
+                    background: #f5f5f5;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    color: #666;
+                    transition: all 0.2s ease;
+                ">取消</button>
+                <button id="decrypt-confirm-ok" style="
+                    padding: 8px 20px;
+                    background: #F44336;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    color: white;
+                    transition: all 0.2s ease;
+                ">确定清空</button>
+            </div>
+        `;
+
+        confirmDialog.appendChild(confirmContent);
+        container.appendChild(confirmDialog);
+
         // 创建圆形浮动按钮 - 显示数据包数量
         const trigger = document.createElement("div");
         trigger.style.cssText = `
@@ -176,10 +240,9 @@
         // 创建侧边栏底部的清理按钮
         const clearBtn = document.createElement("button");
         clearBtn.style.cssText = `
-            position: absolute;
+            position: fixed;
             bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 20px;
             width: 40px;
             height: 40px;
             background: #FF9800;
@@ -392,11 +455,13 @@
                 sidebarToggleBtn.innerHTML = "▶";
                 sidebarToggleBtn.title = "显示侧边栏";
                 sidebarToggleBtn.style.left = "0";
+                clearBtn.style.left = "-40px"; // 隐藏清理按钮
             } else {
                 sidebar.style.width = `${currentSidebarWidth}px`;
                 sidebarToggleBtn.innerHTML = "◀";
                 sidebarToggleBtn.title = "隐藏侧边栏";
                 sidebarToggleBtn.style.left = `${currentSidebarWidth}px`;
+                clearBtn.style.left = "20px"; // 显示清理按钮
             }
             isSidebarVisible = !isSidebarVisible;
         }
@@ -485,21 +550,58 @@
 
         // 修改清理按钮事件处理
         clearBtn.addEventListener("click", () => {
-            if (confirm("确定要清空所有记录吗？")) {
-                decryptedRequests.length = 0;
-                updateRequestList();
-                titleArea.innerHTML = "";
-                contentDisplay.textContent = "";
-                contentDisplay.dataset.index = "";
-                currentViewingIndex = -1;
-                detailsLoaded = false;
+            const dialog = document.getElementById("decrypt-confirm-dialog");
+            const content = dialog.querySelector("div");
 
-                // 添加视觉反馈
-                clearBtn.style.background = "#F44336";
+            // 显示对话框
+            dialog.style.display = "block";
+            setTimeout(() => {
+                dialog.style.opacity = "1";
+                content.style.transform = "translate(-50%, -50%) scale(1)";
+            }, 10);
+
+            // 取消按钮事件
+            document.getElementById("decrypt-confirm-cancel").onclick = () => {
+                dialog.style.opacity = "0";
+                content.style.transform = "translate(-50%, -50%) scale(0.9)";
                 setTimeout(() => {
-                    clearBtn.style.background = "#FF9800";
-                }, 500);
-            }
+                    dialog.style.display = "none";
+                }, 300);
+            };
+
+            // 确认按钮事件
+            document.getElementById("decrypt-confirm-ok").onclick = () => {
+                dialog.style.opacity = "0";
+                content.style.transform = "translate(-50%, -50%) scale(0.9)";
+                setTimeout(() => {
+                    dialog.style.display = "none";
+                    // 执行清空操作
+                    decryptedRequests.length = 0;
+                    updateRequestList();
+                    titleArea.innerHTML = "";
+                    contentDisplay.textContent = "";
+                    contentDisplay.dataset.index = "";
+                    currentViewingIndex = -1;
+                    detailsLoaded = false;
+
+                    // 添加视觉反馈
+                    clearBtn.style.background = "#F44336";
+                    setTimeout(() => {
+                        clearBtn.style.background = "#FF9800";
+                    }, 500);
+                }, 300);
+            };
+
+            // 点击背景关闭
+            dialog.onclick = (e) => {
+                if (e.target === dialog) {
+                    dialog.style.opacity = "0";
+                    content.style.transform = "translate(-50%, -50%) scale(0.9)";
+                    setTimeout(() => {
+                        dialog.style.display = "none";
+                    }, 300);
+                }
+            };
         });
 
         // 修改触发器悬停效果
