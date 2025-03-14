@@ -4,6 +4,8 @@
 // @version      0.4
 // @description  解密10086 APP响应数据，支持多请求查看和管理，可调整界面大小
 // @author       op要喝op奶
+// @updateURL    https://raw.githubusercontent.com/715494637/Judian/refs/heads/main/%E7%A7%BB%E5%8A%A8/Decypter.js
+// @downloadURL  https://raw.githubusercontent.com/715494637/Judian/refs/heads/main/%E7%A7%BB%E5%8A%A8/Decypter.js
 // @match        https://h.app.coc.10086.cn/cmcc-app/*
 // @grant        unsafeWindow
 // @run-at       document-start
