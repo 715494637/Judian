@@ -20,8 +20,17 @@
     // 存储解密的请求数据
     const decryptedRequests = [];
 
-    // 初始侧边栏宽度
-    const DEFAULT_SIDEBAR_WIDTH = 300;
+    // 添加设备检测函数 - 移到前面先定义再使用
+    const isMobileDevice = () => {
+        return (
+            /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+                navigator.userAgent
+            ) || window.innerWidth < 768
+        );
+    };
+
+    // 初始侧边栏宽度 - 针对移动端优化
+    const DEFAULT_SIDEBAR_WIDTH = isMobileDevice() ? 150 : 300;
     let currentSidebarWidth = DEFAULT_SIDEBAR_WIDTH;
     let isFullscreen = false;
 
@@ -30,15 +39,6 @@
 
     // 标记详细内容是否已加载
     let detailsLoaded = false;
-
-    // 添加设备检测函数
-    const isMobileDevice = () => {
-        return (
-            /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-                navigator.userAgent
-            ) || window.innerWidth < 768
-        );
-    };
 
     const byteToString = (input) => {
         if (typeof input === "string") return input;
@@ -91,6 +91,17 @@
             return urlObj.pathname;
         } catch (e) {
             // 如果URL解析失败，返回原始URL
+            return url;
+        }
+    };
+
+    // 获取URL最后一段作为简短显示
+    const getLastPathSegment = (url) => {
+        try {
+            const path = getPathFromUrl(url);
+            const segments = path.split("/").filter((s) => s);
+            return segments.length > 0 ? segments[segments.length - 1] : path;
+        } catch (e) {
             return url;
         }
     };
@@ -204,7 +215,7 @@
         trigger.id = "decrypt-trigger";
         trigger.title = "点击查看解密数据";
 
-        // 创建主窗口 - 确保默认隐藏
+        // 创建主窗口 - 确保默认隐藏并优化移动端大小
         const mainWindow = document.createElement("div");
         mainWindow.style.cssText = `
             display: none;
@@ -212,8 +223,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 90%;
-            height: 80%;
+            width: ${isMobileDevice() ? "98%" : "90%"};
+            height: ${isMobileDevice() ? "90%" : "80%"};
             max-width: 1200px;
             background: white;
             border-radius: 5px;
@@ -225,7 +236,7 @@
         `;
         mainWindow.id = "decrypt-main-window";
 
-        // 创建侧边栏（请求列表）
+        // 创建侧边栏（请求列表）- 针对移动端优化宽度
         const sidebar = document.createElement("div");
         sidebar.style.cssText = `
             width: ${currentSidebarWidth}px;
@@ -316,7 +327,7 @@
         `;
         titleArea.id = "decrypt-title-area";
 
-        // 内容区域
+        // 内容区域 - 优化移动端文本大小和滚动
         const contentDisplay = document.createElement("pre");
         contentDisplay.style.cssText = `
             flex: 1;
@@ -326,7 +337,8 @@
             white-space: pre-wrap;
             word-wrap: break-word;
             font-family: monospace;
-            font-size: 13px;
+            font-size: ${isMobileDevice() ? "11px" : "13px"};
+            -webkit-overflow-scrolling: touch; /* 提升移动端滚动性能 */
         `;
         contentDisplay.id = "decrypt-content-display";
 
@@ -670,6 +682,8 @@
 
                 // 获取路径部分
                 const urlPath = getPathFromUrl(request.url);
+                // 获取路径最后一段用于简洁显示
+                const shortUrlPath = getLastPathSegment(request.url);
 
                 // 计算数据大小
                 const dataStr = JSON.stringify(request.decryptedData);
@@ -677,7 +691,7 @@
 
                 item.innerHTML = `
                     <div style="font-weight: bold; font-size: 12px; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${urlPath}">
-                        ${urlPath}
+                        ${shortUrlPath}
                     </div>
                     <div style="font-size: 11px; color: #666;">
                         ${request.method} | ${dataSize} | ${request.timestamp}
@@ -765,9 +779,22 @@
             </div>
         `;
 
-        // 直接显示完整数据
-        console.log("加载完整数据");
-        contentDisplay.textContent = JSON.stringify(request.decryptedData, null, 2);
+        // 移动端预加载优化: 只显示前1000个字符的内容预览
+        if (isMobileDevice() && JSON.stringify(request.decryptedData).length > 2000) {
+            const preview = JSON.stringify(request.decryptedData, null, 2).substring(0, 1000);
+            contentDisplay.textContent =
+                preview + "\n\n...\n\n(数据较大，已显示部分内容。滚动查看更多...)";
+
+            // 添加延迟加载
+            setTimeout(() => {
+                if (currentViewingIndex === index) {
+                    contentDisplay.textContent = JSON.stringify(request.decryptedData, null, 2);
+                }
+            }, 500);
+        } else {
+            // 直接显示完整数据
+            contentDisplay.textContent = JSON.stringify(request.decryptedData, null, 2);
+        }
     };
 
     // 加载并显示完整的请求详情
@@ -831,7 +858,7 @@
         }
     }
 
-    // 修改添加解密请求函数，更新计数器
+    // 修改添加解密请求函数，优化移动端性能
     const addDecryptedRequest = (url, method, decryptedData) => {
         const now = new Date();
         const timestamp =
@@ -854,6 +881,11 @@
             decryptedData,
             timestamp,
         });
+
+        // 限制存储的请求数量，防止内存过度消耗
+        if (decryptedRequests.length > 100) {
+            decryptedRequests.pop();
+        }
 
         console.log("添加解密请求:", decryptedRequests);
 
