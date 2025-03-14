@@ -1,4 +1,3 @@
-
 from datetime import datetime, timezone, timedelta
 import sys
 import requests
@@ -17,8 +16,8 @@ key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdz
 defualtInvitedCode = "USND7YZDRX"
 defualtToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjk2MzUyLCJBcHAtTnVtYmVyIjoiNDdiZmEwNmI5MGFkNDE3NCIsImlhdCI6MTczNDA1OTg4MSwibmJmIjoxNzM0MDU5ODgxLCJleHAiOjE3MzUzNTU4ODF9.3Whaz8-DtoS1LAThoTl9TpDoOk94UOFV3-sXdIcCLMs"
 passWord = "dddd1111"
-# proxylist = requests.get("https://raw.githubusercontent.com/MuRongPIG/Proxy-Master/refs/heads/main/socks5_checked.txt").text.split("\n")
-# print("代理池长度：" + str(len(proxylist)))
+proxylist = requests.get("https://raw.githubusercontent.com/MuRongPIG/Proxy-Master/refs/heads/main/socks5_checked.txt").text.split("\n")
+print("代理池长度：" + str(len(proxylist)))
 
 
 
@@ -101,14 +100,15 @@ class Judian:
         }
         if self.accessToken:
             self.headers["Authorization"] = f"Bearer {self.accessToken}"
-        # self.getProxy()
+        self.getProxy()
 
-    # def getProxy(self):
-    #     p = random.choice(proxylist)
-    #     self.proxy = {
-    #         "http": f"socks5://{p}",
-    #         "https": f"socks5://{p}"
-    #     }
+    def getProxy(self):
+        p = random.choice(proxylist)
+        self.proxy = {
+            "http": f"socks5://{p}",
+            "https": f"socks5://{p}"
+        }
+        print("使用代理：" + self.proxy["http"])
 
     def sendcode(self,account:str):
         url = "http://111.230.160.82/user/emailSend"
@@ -117,12 +117,12 @@ class Judian:
             "account": account
         }
         data = json.dumps(data, separators=(',', ':'))
-        # try:
-        #     response = requests.post(url, headers=Judian().headers, data=data,proxies=self.proxy) 
-        # except Exception :
-        #     self.getProxy()
-        #     return self.sendcode(account)
-        response = requests.post(url, headers=self.headers, data=data)
+        try:
+               response = requests.post(url, headers=self.headers, data=data, proxies=self.proxy)
+        except Exception:
+            print("发送验证码失败，更换代理")
+            self.getProxy()
+            return self.sendcode(account)
 
         return response
 
@@ -139,6 +139,7 @@ class Judian:
         response = requests.post(url, headers=self.headers, data=data)
         res = response.json()
         if not res["data"] or res["code"] == 300:
+            dataBase().deleteAcc
             return False
         self.expireTime = res["data"]["expireTime"]
         self.accessToken = res["data"]["accessToken"]
@@ -174,7 +175,7 @@ class Judian:
                 "confirmPassword":passWord
             }
             data = json.dumps(data, separators=(',', ':'))
-            return requests.post(url,headers=self.headers,data=data)
+            return requests.post(url,headers=self.headers,data=data,proxies=self.proxy)
         print(setPassWord().json())
         return {
             "expireTime":self.expireTime,
@@ -197,7 +198,7 @@ class Judian:
         }
         data = json.dumps(data, separators=(',', ':'))
         try:
-            response = requests.post(url, headers=self.headers, data=data)
+            response = requests.post(url, headers=self.headers, data=data,proxies=self.proxy)
         except Exception:
             self.getProxy()
             return self.submit(advertNo,costModel,platformCode,platformId,spaceId,typeId)
@@ -214,8 +215,8 @@ class Judian:
             res = requests.get("http://111.230.160.82/user/fund/getFund",headers=self.headers)
             j = res.json()
             return j["data"]["quantity"]
-        if not baseInfo()["account"]:
-            return False
+        if not baseInfo():
+            dataBase().deleteAcc()
         info =  {
             "account": baseInfo()["account"],
             "passWord":passWord,
@@ -300,7 +301,7 @@ class dataBase:
         print("更新cookie成功---" + info["account"])
         return {"account":info["account"], "accessToken":info["accessToken"]}
     
-    def GetAllToken(self,update=False):
+    def GetAllToken(self):
         # def tokenValid(t_str,now_ts): 
         #     target = datetime.strptime(t_str, "%Y-%m-%d %H:%M:%S")
         #     t_ts = time.mktime(target.timetuple()) + 8 * 3600
@@ -320,15 +321,14 @@ class dataBase:
             #     tokenPool.append({"account":info["account"],"accessToken":info["accessToken"]})
             # else:
             #     print("账号已过期---" + info["account"])
-        if not update:
-            for info in res :
-               tokenPool.append({"account":info["account"],"accessToken":info["accessToken"]})
-            return tokenPool
+        # if not update:
+        #     for info in res :
+        #        tokenPool.append({"account":info["account"],"accessToken":info["accessToken"]})
+        #     return tokenPool
         
         with concurrent.futures.ThreadPoolExecutor() as executor:
             # 使用字典推导式来提交任务并创建一个映射
             future_to_info = {executor.submit(self.process_account, info): info for info in res}
-
             # 遍历完成的任务
             for future in concurrent.futures.as_completed(future_to_info):
                 try:
@@ -363,7 +363,7 @@ class dataBase:
         ).data
             return result["inviteCode"]
         except Exception :
-            return "USND7YZDRX"
+            return ""
       
         
     
@@ -381,7 +381,7 @@ class dataBase:
 def CompleteTasks(account:str,accessToken:str):
     db = dataBase()
     judian = Judian(accessToken)
-    # print(f"{account}---本次使用代理：{judian.proxy["https"]}")
+    print(f"{account}---本次使用代理：{judian.proxy["https"]}")
     # 循环两次
     for _ in range(2):
         ads = judian.getad()
@@ -411,18 +411,21 @@ def RegistThread(inviteCode:str):
     db = dataBase()
     register = Register()
     judian = Judian()
-    account =  register.getAccount()
+    account = register.getAccount()
     res = judian.sendcode(account).json()
     if res["code"] == 200:
         print(account + "---发送验证码成功")
     else:
         print(account + "---发送验证码失败\n"+str(res))
         return
+        
+    # Initialize id first
+    id = False
     while not id:
         print(account + "---正在获取邮件中")
         id = register.getId(account)
-    id = False
-    time.sleep(5)
+        time.sleep(5)  # Add small delay to avoid hammering the API
+        
     code = register.getCode(account,id)
     print(account + "---获取到验证码："+ code)
     tkInfo = judian.regist(account,code,inviteCode)
@@ -433,7 +436,7 @@ def RegistThread(inviteCode:str):
     info = judian.getInfo()
     db.upsertAcc(info)
     print(account + "---数据库新增账号成功")
-    return 
+    return
 
 
     # CompleteTasks(account,tkInfo["accessToken"],NewAcc=True)
@@ -457,7 +460,7 @@ def run_multiple_Regist(num_accounts):
     print("---使用数据库邀请码---"+inviteCode)
     threads = []
     for _ in range(num_accounts):
-        thread = threading.Thread(target=RegistThread,args=(inviteCode,))
+        thread = threading.Thread(target=RegistThread,args=(inviteCode or "",))
         threads.append(thread)
         thread.start()
     for thread in threads:
@@ -485,12 +488,9 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         function_name = sys.argv[1]
         if function_name == 'regist':
-
             run_multiple_Regist(5)
         elif function_name == 'task':
             run_multiple_Task()
-        elif function_name == 'update':
-            dataBase().GetAllToken(True)
         elif function_name == 'test':
             print("test")
         else:
