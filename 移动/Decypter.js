@@ -236,6 +236,47 @@
         `;
         mainWindow.id = "decrypt-main-window";
 
+        // 创建右上角关闭按钮
+        const closeButton = document.createElement("div");
+        closeButton.style.cssText = `
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            background: #f44336;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            z-index: 10003;
+            transition: all 0.2s ease;
+        `;
+        closeButton.innerHTML = "✕";
+        closeButton.title = "关闭窗口";
+        closeButton.id = "decrypt-close-btn";
+
+        // 添加按钮悬停效果
+        closeButton.addEventListener("mouseover", () => {
+            closeButton.style.transform = "scale(1.1)";
+        });
+
+        closeButton.addEventListener("mouseout", () => {
+            closeButton.style.transform = "scale(1)";
+        });
+
+        // 添加点击事件 - 隐藏主窗口
+        closeButton.addEventListener("click", () => {
+            mainWindow.style.display = "none";
+        });
+
+        // 将关闭按钮添加到主窗口
+        mainWindow.appendChild(closeButton);
+
         // 创建侧边栏（请求列表）- 针对移动端优化宽度
         const sidebar = document.createElement("div");
         sidebar.style.cssText = `
@@ -491,7 +532,39 @@
             if (!text) return;
 
             navigator.clipboard.writeText(text).then(() => {
-                // 桌面端显示文字，移动端显示图标闪烁效果
+                // 创建临时提示元素
+                const toast = document.createElement("div");
+                toast.style.cssText = `
+                    position: fixed;
+                    bottom: 100px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: rgba(0, 0, 0, 0.7);
+                    color: white;
+                    padding: 10px 20px;
+                    border-radius: 4px;
+                    font-size: 14px;
+                    z-index: 10005;
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
+                `;
+                toast.textContent = "复制成功！";
+                document.body.appendChild(toast);
+
+                // 显示提示
+                setTimeout(() => {
+                    toast.style.opacity = "1";
+                }, 10);
+
+                // 移除提示
+                setTimeout(() => {
+                    toast.style.opacity = "0";
+                    setTimeout(() => {
+                        document.body.removeChild(toast);
+                    }, 300);
+                }, 2000);
+
+                // 保持原有的按钮反馈效果
                 if (window.innerWidth < 768) {
                     const originalColor = copyBtn.style.background;
                     copyBtn.style.background = "#45a049";
@@ -837,25 +910,63 @@
         }, 50); // 短延迟以确保UI更新
     };
 
-    // 更新计数器数字函数
-    function updateCounterNumber() {
-        const trigger = document.getElementById("decrypt-trigger");
-        if (trigger) {
-            const count = decryptedRequests.length;
-            console.log("更新计数器:", count);
-            trigger.textContent = count.toString();
-            trigger.style.display = "flex";
+    // 创建周期性计数器更新函数和监听器
+    const setupCounterUpdater = () => {
+        // 初始状态更新一次
+        setTimeout(updateCounterFromData, 500);
 
-            // 如果有新数据，突出显示计数器
-            if (count > 0) {
+        // 设置定期检查更新
+        const counterInterval = setInterval(updateCounterFromData, 2000);
+
+        // 页面可见性变化时更新
+        document.addEventListener("visibilitychange", () => {
+            if (!document.hidden) {
+                updateCounterFromData();
+            }
+        });
+
+        // 如果页面关闭/刷新时清除定时器
+        window.addEventListener("beforeunload", () => {
+            clearInterval(counterInterval);
+        });
+    };
+
+    // 从数据源直接更新计数器，不依赖调用位置
+    const updateCounterFromData = () => {
+        const count = decryptedRequests.length;
+        const trigger = document.getElementById("decrypt-trigger");
+
+        if (!trigger) {
+            console.debug("计数器元素不存在，创建界面");
+            ensureUIInitialized();
+            return; // 下一个周期会再次尝试
+        }
+
+        const currentCount = parseInt(trigger.textContent || "0");
+
+        // 只有当计数变化时才更新
+        if (currentCount !== count) {
+            console.log("更新计数器:", currentCount, "->", count);
+            trigger.textContent = count.toString();
+
+            // 当有新增数据时，提供视觉反馈
+            if (count > currentCount && count > 0) {
+                // 添加动画效果
+                trigger.style.transition = "all 0.3s ease";
                 trigger.style.background = "#F44336"; // 红色背景
+                trigger.style.transform = "scale(1.2)";
+
                 setTimeout(() => {
                     trigger.style.background = "#2196F3"; // 恢复蓝色
+                    trigger.style.transform = "scale(1)";
                 }, 1000);
             }
-        } else {
-            console.error("未找到触发器元素");
         }
+    };
+
+    // 修改原计数器更新函数，调用新函数
+    function updateCounterNumber() {
+        updateCounterFromData();
     }
 
     // 修改添加解密请求函数，优化移动端性能
@@ -892,8 +1003,8 @@
         // 确保UI已初始化
         ensureUIInitialized();
 
-        // 更新计数器
-        updateCounterNumber();
+        // 立即尝试更新计数器一次
+        updateCounterFromData();
 
         // 更新请求列表
         updateRequestList();
@@ -909,6 +1020,8 @@
         if (!document.getElementById("decrypt-container")) {
             console.log("初始化UI");
             createMultiRequestViewer();
+            // 在UI初始化后设置计数器更新系统
+            setupCounterUpdater();
         }
 
         // 确保主窗口和内容区域存在
