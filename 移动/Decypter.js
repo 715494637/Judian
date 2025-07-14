@@ -963,7 +963,6 @@
             }
         }
     };
-
     // 修改原计数器更新函数，调用新函数
     function updateCounterNumber() {
         updateCounterFromData();

@@ -1,0 +1,630 @@
+[
+  {
+    "productId": "91322930",
+    "id": "20240119001",
+    "commId": "894201265747",
+    "productName": "20元20GB国内流量7日包（新疆）",
+    "productType": "1",
+    "productPrice": "20",
+    "productNum": "20",
+    "productUnit": "GB"
+  },
+  {
+    "productId": "91384628",
+    "id": "1742293858971528",
+    "commId": "895203188525",
+    "productName": "5G流量包15元20G快手组合流量（新疆）-立即生效",
+    "productType": "1",
+    "productPrice": "15",
+    "productNum": "20",
+    "productUnit": "GB"
+  },
+  {
+    "productId": "91380458",
+    "id": "1742372230511874",
+    "commId": "895203188528",
+    "productName": "5G权益包30元15G加油会员（新疆）-立即生效",
+    "productType": "1",
+    "productPrice": "30",
+    "productNum": "15",
+    "productUnit": "GB"
+  },
+  {
+    "productId": "91380453",
+    "id": "20250319001",
+    "commId": "895203188527",
+    "productName": "5G权益包20元10G加油会员（新疆）-立即生效",
+    "productType": "1",
+    "productPrice": "20",
+    "productNum": "10",
+    "productUnit": "GB"
+  },
+  {
+    "productId": "91319666",
+    "id": "20240103001",
+    "commId": "893212292401",
+    "productName": "20元20G优享速率_轻合约版（新疆）",
+    "productType": "1",
+    "productPrice": "20",
+    "productNum": "20",
+    "productUnit": "GB"
+  },
+  {
+    "productId": "91319670",
+    "id": "20240103002",
+    "commId": "893212292402",
+    "productName": "30元30G优享速率_轻合约版（新疆）",
+    "productType": "1",
+    "productPrice": "30",
+    "productNum": "30",
+    "productUnit": "GB"
+  },
+  {
+    "productId": "91024713",
+    "id": "20240109001",
+    "commId": "893208216650",
+    "productName": "12元20G今日头条系（含抖音）定向流量月包（立即）（新疆）",
+    "productType": "1",
+    "productPrice": "12",
+    "productNum": "20",
+    "productUnit": "GB"
+  },
+  {
+    "productId": "91327319",
+    "id": "20240318001",
+    "commId": "894203140175",
+    "productName": "5元5G优享速率包（立即生效）（新疆）",
+    "productType": "1",
+    "productPrice": "5",
+    "productNum": "",
+    "productUnit": "5G提速包"
+  },
+  {
+    "productId": "91368185",
+    "id": "20241223002",
+    "commId": "894212249310",
+    "productName": "5G权益包20元10G德联万家会员（新疆）",
+    "productType": "1",
+    "productPrice": "20",
+    "productNum": "10",
+    "productUnit": "GB"
+  },
+  {
+    "productId": "91279411",
+    "id": "20241018001",
+    "commId": "894210178912",
+    "productName": "5G权益包-15元联通加油彩铃包",
+    "productType": "1",
+    "productPrice": "15",
+    "productNum": "",
+    "productUnit": "加油券+彩铃"
+  },
+  {
+    "productId": "91283441",
+    "id": "131",
+    "commId": "893206012307",
+    "productName": "50元60GB流量季包（5G版）",
+    "productType": "1",
+    "productPrice": "50",
+    "productNum": "60",
+    "productUnit": "GB"
+  },
+  {
+    "productId": "91345860",
+    "id": "20240813002",
+    "commId": "894208028936",
+    "productName": "5G权益包20元视频月会员（新疆）-立即生效",
+    "productType": "1",
+    "productPrice": "20",
+    "productNum": "",
+    "productUnit": "视频月会员"
+  },
+  {
+    "productId": "91345853",
+    "id": "20240813001",
+    "commId": "894208028937",
+    "productName": "5G权益包10元视频周会员（新疆）-立即生效",
+    "productType": "1",
+    "productPrice": "10",
+    "productNum": "",
+    "productUnit": "视频周会员"
+  },
+  {
+    "productId": "91287532_2",
+    "id": "194",
+    "commId": "893206256573",
+    "productName": "20元联通车秘（新疆）",
+    "productType": "1",
+    "productPrice": "20",
+    "productNum": "",
+    "productUnit": "加油券+智能应答"
+  },
+  {
+    "productId": "91287616",
+    "id": "20240722001",
+    "commId": "894204193537",
+    "productName": "3元2G假日包（有效期1天）（新疆）",
+    "productType": "1",
+    "productPrice": "3",
+    "productNum": "2",
+    "productUnit": "GB"
+  },
+  {
+    "productId": "91367508",
+    "id": "20241107001",
+    "commId": "894211075782",
+    "productName": "20元10GB国内流量加油包（新疆）",
+    "productType": "1",
+    "productPrice": "20",
+    "productNum": "10",
+    "productUnit": "GB"
+  },
+  {
+    "goodsId": "800000714",
+    "goodsName": "畅游权益包",
+    "goodsType": "畅游权益包",
+    "goodsPrice": "2000",
+    "productId": "514204115123",
+    "commCode": "91285635",
+    "productPrice": "2000.00",
+    "showProductName": "畅游权益包"
+  },
+  {
+    "goodsId": "800000662",
+    "goodsName": "16元联通助理特享包",
+    "goodsType": "16元联通助理特享包(广东)-立即生效",
+    "goodsPrice": "",
+    "productId": "514207225923",
+    "commCode": "91349143",
+    "productPrice": "1000.00",
+    "showProductName": "16元联通助理特享包(广东)-立即生效"
+  },
+  {
+    "goodsId": "800000588",
+    "goodsName": "联通助理畅爽版",
+    "goodsType": "联通助理畅爽版",
+    "goodsPrice": "1598",
+    "productId": "514201057417",
+    "commCode": "91311556",
+    "productPrice": "1600.00",
+    "showProductName": "广东-联通助理-畅爽版"
+  },
+  {
+    "goodsId": "800000446",
+    "goodsName": "特惠七天包",
+    "goodsType": "特惠七天包",
+    "goodsPrice": "0",
+    "productId": "513201068949",
+    "commCode": "91260855",
+    "productPrice": "1500.00",
+    "showProductName": "广东-优惠-15元10GB七天包"
+  },
+  {
+    "goodsId": "800000446",
+    "goodsName": "特惠七天包",
+    "goodsType": "特惠七天包",
+    "goodsPrice": "0",
+    "productId": "513201068953",
+    "commCode": "91260857",
+    "productPrice": "3000.00",
+    "showProductName": "广东-优惠-30元25GB七天包"
+  },
+  {
+    "goodsId": "800000505",
+    "goodsName": "港澳漫游多天包",
+    "goodsType": "港澳漫游多天包",
+    "goodsPrice": "",
+    "productId": "513204230269",
+    "commCode": "91280429",
+    "productPrice": "2000.00",
+    "showProductName": "港澳漫游1天包"
+  },
+  {
+    "goodsId": "800000505",
+    "goodsName": "港澳漫游多天包",
+    "goodsType": "港澳漫游多天包",
+    "goodsPrice": "",
+    "productId": "513204230275",
+    "commCode": "91280435",
+    "productPrice": "3500.00",
+    "showProductName": "港澳漫游2天包"
+  },
+  {
+    "goodsId": "800000505",
+    "goodsName": "港澳漫游多天包",
+    "goodsType": "港澳漫游多天包",
+    "goodsPrice": "",
+    "productId": "513204230282",
+    "commCode": "91280437",
+    "productPrice": "5500.00",
+    "showProductName": "港澳漫游3天包"
+  },
+  {
+    "goodsId": "800000505",
+    "goodsName": "港澳漫游多天包",
+    "goodsType": "港澳漫游多天包",
+    "goodsPrice": "",
+    "productId": "513204230286",
+    "commCode": "91280438",
+    "productPrice": "12500.00",
+    "showProductName": "港澳漫游7天包"
+  },
+  {
+    "goodsId": "800000634",
+    "goodsName": "乐享月卡会员（腾讯视频版）",
+    "goodsType": "19.9元乐享月卡会员（腾讯视频版）",
+    "goodsPrice": "1900",
+    "productId": "514203255312",
+    "commCode": "91328965",
+    "productPrice": "1990.00",
+    "showProductName": "19.9元乐享月卡会员（腾讯视频版）"
+  },
+  {
+    "goodsId": "800000711",
+    "goodsName": "优酷尊享包",
+    "goodsType": "优酷会员尊享包（3GB版）",
+    "goodsPrice": "2500",
+    "productId": "513203202712",
+    "commCode": "91272308",
+    "productPrice": "1.00",
+    "showProductName": "优酷会员尊享包（3GB版）"
+  },
+  {
+    "goodsId": "800000035",
+    "goodsName": "10元3GB三天包",
+    "goodsType": "3天包",
+    "goodsPrice": "0",
+    "productId": "90756541",
+    "commCode": "90756541",
+    "productPrice": "1000.00",
+    "showProductName": "广东10元3GB三天流量包产品"
+  },
+  {
+    "goodsId": "800000726",
+    "goodsName": "畅付优享流量包",
+    "goodsType": "20元畅付优享生活权益流量组合包（广东）-立即生效",
+    "goodsPrice": "1400",
+    "productId": "514212139200",
+    "commCode": "91373208",
+    "productPrice": "1400.00",
+    "showProductName": "20元畅付优享生活权益流量组合包（广东）-立即生效"
+  },
+  {
+    "goodsId": "800000682",
+    "goodsName": "联通爱听 （优享版）",
+    "goodsType": "联通爱听 （优享版）",
+    "goodsPrice": "800",
+    "productId": "514208072261",
+    "commCode": "99149927",
+    "productPrice": "800.00",
+    "showProductName": "联通爱听 （优享版）"
+  },
+  {
+    "goodsId": "800000448",
+    "goodsName": "流量补给月包",
+    "goodsType": "流量补给月包",
+    "goodsPrice": "0",
+    "productId": "513201068973",
+    "commCode": "91260893",
+    "productPrice": "1900.00",
+    "showProductName": "广东19元5GB流量月包（立即生效）"
+  },
+  {
+    "goodsId": "800000448",
+    "goodsName": "流量补给月包",
+    "goodsType": "流量补给月包",
+    "goodsPrice": "0",
+    "productId": "513203276639",
+    "commCode": "91260895",
+    "productPrice": "1990.00",
+    "showProductName": "29元10GB流量月包首3个月直降（立即生效）"
+  },
+  {
+    "goodsId": "800000448",
+    "goodsName": "流量补给月包",
+    "goodsType": "流量补给月包",
+    "goodsPrice": "0",
+    "productId": "513208110895",
+    "commCode": "91296434",
+    "productPrice": "2900.00",
+    "showProductName": "广东-全享包智家版29元（立即生效）"
+  },
+  {
+    "goodsId": "800000448",
+    "goodsName": "流量补给月包",
+    "goodsType": "流量补给月包",
+    "goodsPrice": "0",
+    "productId": "513208110897",
+    "commCode": "91296438",
+    "productPrice": "2900.00",
+    "showProductName": "广东-全享包智家版29元（次月生效）"
+  },
+  {
+    "goodsId": "800000560",
+    "goodsName": "全享包智家版39元",
+    "goodsType": "全享包智家版39元",
+    "goodsPrice": "3900",
+    "productId": "513208110901",
+    "commCode": "91296439",
+    "productPrice": "3900.00",
+    "showProductName": "广东-全享包智家版39元（立即生效）"
+  },
+  {
+    "goodsId": "800000560",
+    "goodsName": "全享包智家版39元",
+    "goodsType": "全享包智家版39元",
+    "goodsPrice": "3900",
+    "productId": "513208110904",
+    "commCode": "91296440",
+    "productPrice": "3900.00",
+    "showProductName": "广东-全享包智家版39元（次月生效）"
+  },
+  {
+    "goodsId": "800000637",
+    "goodsName": "乐享月卡会员（爱奇艺版）",
+    "goodsType": "19.9元乐享月卡会员（爱奇艺3GB版）",
+    "goodsPrice": "1900",
+    "productId": "514205223766",
+    "commCode": "77864469",
+    "productPrice": "1990.00",
+    "showProductName": "19.9元乐享月卡会员（爱奇艺3GB版）"
+  },
+  {
+    "goodsId": "800000499",
+    "goodsName": "4小时国内流量包",
+    "goodsType": "4小时国内流量包",
+    "goodsPrice": "0",
+    "productId": "513202086339",
+    "commCode": "91258794",
+    "productPrice": "500.00",
+    "showProductName": "5元3GB4小时国内流量包（立即生效）"
+  },
+  {
+    "goodsId": "800000499",
+    "goodsName": "4小时国内流量包",
+    "goodsType": "4小时国内流量包",
+    "goodsPrice": "0",
+    "productId": "513203309090",
+    "commCode": "91258792",
+    "productPrice": "200.00",
+    "showProductName": "2元1GB4小时国内流量包（立即生效）"
+  },
+  {
+    "goodsId": "800000638",
+    "goodsName": "乐享月卡会员（哔哩哔哩3GB版）",
+    "goodsType": "19.9元乐享月卡会员（哔哩哔哩3GB版）",
+    "goodsPrice": "1990",
+    "productId": "514205223793",
+    "commCode": "77864470",
+    "productPrice": "1990.00",
+    "showProductName": "19.9元乐享月卡会员（哔哩哔哩3GB版）"
+  },
+  {
+    "goodsId": "800000639",
+    "goodsName": "乐享月卡会员（优酷3GB版）",
+    "goodsType": "19.9元乐享月卡会员（优酷3GB版）",
+    "goodsPrice": "1990",
+    "productId": "514205223804",
+    "commCode": "91340083",
+    "productPrice": "1990.00",
+    "showProductName": "19.9元乐享月卡会员（优酷3GB版）"
+  },
+  {
+    "goodsId": "800000640",
+    "goodsName": "乐享月卡会员（喜马拉雅3GB版）",
+    "goodsType": "19.9元乐享月卡会员（喜马拉雅3GB版）",
+    "goodsPrice": "1990",
+    "productId": "514205223814",
+    "commCode": "91340084",
+    "productPrice": "1990.00",
+    "showProductName": "19.9元乐享月卡会员（喜马拉雅3GB版）"
+  },
+  {
+    "goodsId": "800000641",
+    "goodsName": "乐享月卡会员（芒果3GB版）",
+    "goodsType": "19.9元乐享月卡会员（芒果3GB版）",
+    "goodsPrice": "1990",
+    "productId": "514205223827",
+    "commCode": "91340085",
+    "productPrice": "1990.00",
+    "showProductName": "19.9元乐享月卡会员（芒果3GB版）"
+  },
+  {
+    "goodsId": "800000551",
+    "goodsName": "专区短效流量推广聚合页二（虚拟）",
+    "goodsType": "专区短效流量推广聚合页二（虚拟）",
+    "goodsPrice": "0",
+    "productId": "513209132876",
+    "commCode": "",
+    "productPrice": "0.00",
+    "showProductName": "专区短效流量推广聚合页二（虚拟）"
+  },
+  {
+    "goodsId": "800000507",
+    "goodsName": "大流量畅享铂金包",
+    "goodsType": "大流量畅享铂金包",
+    "goodsPrice": "2000",
+    "productId": "513204196062",
+    "commCode": "91279487",
+    "productPrice": "2000.00",
+    "showProductName": "广东-大流量畅享铂金包"
+  },
+  {
+    "goodsId": "800000606",
+    "goodsName": "乐享月卡会员（bilibili版）",
+    "goodsType": "24.9元乐享月卡会员（bilibili版）",
+    "goodsPrice": "2490",
+    "productId": "514201024128",
+    "commCode": "91318494",
+    "productPrice": "2490.00",
+    "showProductName": "24.9元乐享月卡会员（bilibili版）"
+  },
+  {
+    "goodsId": "800000589",
+    "goodsName": "唯品会权益包",
+    "goodsType": "唯品会权益包",
+    "goodsPrice": "990",
+    "productId": "513212014505",
+    "commCode": "",
+    "productPrice": "990.00",
+    "showProductName": "广东联通&唯品会畅购权益包"
+  },
+  {
+    "goodsId": "800000557",
+    "goodsName": "乐享月卡会员（QQ音乐版）",
+    "goodsType": "24.9元乐享月卡会员（QQ音乐版）",
+    "goodsPrice": "2490",
+    "productId": "513209015307",
+    "commCode": "91299183",
+    "productPrice": "2490.00",
+    "showProductName": "24.9元乐享月卡会员（QQ音乐版）"
+  },
+  {
+    "goodsId": "800000607",
+    "goodsName": "乐享月卡会员（芒果TV版）",
+    "goodsType": "24.9元乐享月卡会员（芒果TV版）",
+    "goodsPrice": "2490",
+    "productId": "514201020394",
+    "commCode": "91320058",
+    "productPrice": "2490.00",
+    "showProductName": "24.9元乐享月卡会员（芒果TV版）"
+  },
+  {
+    "goodsId": "800000451",
+    "goodsName": "月月领三天包",
+    "goodsType": "月月领三天包",
+    "goodsPrice": "0",
+    "productId": "513201046298",
+    "commCode": "91260908",
+    "productPrice": "1000.00",
+    "showProductName": "广东-10元10GB流量月月3天包（立即生效）"
+  },
+  {
+    "goodsId": "800000527",
+    "goodsName": "广东优惠单日包",
+    "goodsType": "广东优惠单日包",
+    "goodsPrice": "",
+    "productId": "1594359916393954",
+    "commCode": "90931128",
+    "productPrice": "250.00",
+    "showProductName": "广东优惠-2.5元1GB快餐日包-202007"
+  },
+  {
+    "goodsId": "800000527",
+    "goodsName": "广东优惠单日包",
+    "goodsType": "广东优惠单日包",
+    "goodsPrice": "",
+    "productId": "1594091156871542",
+    "commCode": "90929402",
+    "productPrice": "100.00",
+    "showProductName": "广东优惠-1元200M快餐日包-202007"
+  },
+  {
+    "goodsId": "800000727",
+    "goodsName": "畅付尊享流量包",
+    "goodsType": "30元畅付尊享生活权益流量组合包（广东）-立即生效",
+    "goodsPrice": "",
+    "productId": "514212182267",
+    "commCode": "91373210",
+    "productPrice": "2100.00",
+    "showProductName": "30元畅付尊享生活权益流量组合包（广东）-立即生效"
+  },
+  {
+    "goodsId": "800000684",
+    "goodsName": "生活权益畅享版",
+    "goodsType": "生活权益畅享版20元（广东）-立即生效",
+    "goodsPrice": "2000",
+    "productId": "514208050384",
+    "commCode": "91352089",
+    "productPrice": "2000.00",
+    "showProductName": "生活权益畅享版20元（广东）-立即生效"
+  },
+  {
+    "goodsId": "800000450",
+    "goodsName": "月月领七天包",
+    "goodsType": "月月领七天包",
+    "goodsPrice": "0",
+    "productId": "513201046295",
+    "commCode": "91260907",
+    "productPrice": "2000.00",
+    "showProductName": "广东-20元14GB流量月月7天包（立即生效）"
+  },
+  {
+    "goodsId": "800000710",
+    "goodsName": "5G宽视界钻享会员及联通助理畅爽版（虚拟）",
+    "goodsType": "",
+    "goodsPrice": "",
+    "productId": "514208150159",
+    "commCode": "",
+    "showProductName": "5G宽视界钻享会员及联通助理畅爽版（虚拟）"
+  },
+  {
+    "goodsId": "800000601",
+    "goodsName": "1元10GB双拼产品聚合页",
+    "goodsType": "1元10GB双拼产品聚合页",
+    "goodsPrice": "0",
+    "productId": "514201166061",
+    "commCode": "",
+    "productPrice": "0.00",
+    "showProductName": "1元10GB双拼产品聚合页"
+  },
+  {
+    "goodsId": "800000187",
+    "goodsName": "周末秒杀活动",
+    "goodsType": "周末秒杀活动",
+    "goodsPrice": "0",
+    "productId": "1592292593922627",
+    "commCode": "",
+    "productPrice": "0.00",
+    "showProductName": ""
+  },
+  {
+    "goodsId": "800000630",
+    "goodsName": "30元50GB特惠7天包",
+    "goodsType": "广东30元50GB特惠7天包",
+    "goodsPrice": "3000",
+    "productId": "514204282020",
+    "commCode": "91336029",
+    "productPrice": "3000.00",
+    "showProductName": "30元50GB国内通用流量7日包（广东）-立即生效"
+  },
+  {
+    "goodsId": "800000605",
+    "goodsName": "流量权益组合包",
+    "goodsType": "流量权益组合包",
+    "goodsPrice": "2500",
+    "productId": "514201057573",
+    "commCode": "91320999",
+    "productPrice": "2500.00",
+    "showProductName": "25元流量权益组合包（广东）-立即生效"
+  },
+  {
+    "goodsId": "800000646",
+    "goodsName": "乐享月卡会员",
+    "goodsType": "乐享月卡会员",
+    "goodsPrice": "",
+    "productId": "514210285691",
+    "commCode": "91365404",
+    "productPrice": "2490.00",
+    "showProductName": "24.9元腾讯视频月卡流量组合包（广东）-立即生效"
+  },
+  {
+    "goodsId": "800000646",
+    "goodsName": "乐享月卡会员",
+    "goodsType": "乐享月卡会员",
+    "goodsPrice": "",
+    "productId": "514210285922",
+    "commCode": "91365384",
+    "productPrice": "1490.00",
+    "showProductName": "14.9元腾讯视频周卡流量组合包（广东）-立即生效"
+  },
+  {
+    "goodsId": "800000635",
+    "goodsName": "领券中心",
+    "goodsType": "领券中心",
+    "goodsPrice": "",
+    "productId": "514209099975",
+    "commCode": "",
+    "showProductName": "领券中心"
+  }
+]

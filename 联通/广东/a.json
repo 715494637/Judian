@@ -1,0 +1,26 @@
+p = {
+    "couponId": "8068694902",
+    "actId": "91027217",
+    "serialNumber": "13149080003",
+    "tradeId": "5125032012312660",
+    "accountType": "",
+    "account": "13149080003",
+    "acceptNo": "5125032012312660",
+    "smsCode": "432819",    
+    "resId": "8068694902",
+    "receiverName": "",
+    "receiverPhoneNumber": "",
+    "receiverAddress": "",
+    "groupCouponId": "",
+    "businessType": ""
+}
+
+p = {
+    ...p,
+    "accountType": "",
+    "couponId": "8068694902",
+    "actId": "91027217",
+    "resId": "8068694902",
+}
+
+print(b)
