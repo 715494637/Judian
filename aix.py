@@ -9,7 +9,7 @@ headers = {
     "origin": "https://ld01.aixwebfx001.top",
     "pragma": "no-cache",
     "priority": "u=1, i",
-    "referer": "https://ld01.aixwebfx001.top/viewVideoRecommend?shareUserId=1944756899444338688",
+    "referer": "https://ld01.aixwebfx001.top/viewVideoRecommend?shareUserId=1950808184285294592",
     "sec-fetch-dest": "empty",
     "sec-fetch-mode": "cors",
     "sec-fetch-site": "same-origin",
@@ -17,7 +17,7 @@ headers = {
     "x-client-id": "vue-client"
 }
 
-url = "https://ld01.aixwebfx001.top/view/shareUserIncome/1944756899444338688"
+url = "https://ld01.aixwebfx001.top/view/shareUserIncome/1950808184285294592"
 data = {
     "\"wjRJWK3baizagc4xo6bR4A": "=\""
 }
