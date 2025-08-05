@@ -1,27 +1,18 @@
-import requests
-
-
-headers = {
-    "accept": "application/json, text/plain, */*",
-    "accept-language": "zh-CN,zh;q=0.9",
-    "cache-control": "no-cache",
-    "content-type": "application/json",
-    "origin": "https://ld01.aixwebfx001.top",
-    "pragma": "no-cache",
-    "priority": "u=1, i",
-    "referer": "https://ld01.aixwebfx001.top/viewVideoRecommend?shareUserId=1950808184285294592",
-    "sec-fetch-dest": "empty",
-    "sec-fetch-mode": "cors",
-    "sec-fetch-site": "same-origin",
-    "user-agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Mobile Safari/537.36 Edg/138.0.0.0",
-    "x-client-id": "vue-client"
-}
-
-url = "https://ld01.aixwebfx001.top/view/shareUserIncome/1950808184285294592"
-data = {
-    "\"wjRJWK3baizagc4xo6bR4A": "=\""
-}
-response = requests.post(url, headers=headers, data=data)
-
-print(response.text)
-print(response)
+curl 'https://tx.aixtx001.top/view/shareUserIncome/1950808184285294592' \
+  -H 'accept: application/json, text/plain, */*' \
+  -H 'accept-language: zh-CN,zh;q=0.9' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'origin: https://aixldc01.cc' \
+  -H 'pragma: no-cache' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://aixldc01.cc/' \
+  -H 'sec-ch-ua: "Not)A;Brand";v="8", "Chromium";v="138", "Microsoft Edge";v="138"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "Windows"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: cross-site' \
+  -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0' \
+  -H 'x-client-id: vue-client' \
+  --data-raw '"wjRJWK3baizagc4xo6bR4A=="'
