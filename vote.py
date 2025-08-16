@@ -6,32 +6,32 @@ import threading
 data = [
     {
         "phone": "18327067711",
-        "token": "f939be3b-19dd-4937-8e9c-c8bd5339ed5b",    
+        "access_token": "f939be3b-19dd-4937-8e9c-c8bd5339ed5b",    
         "refresh_token": "e138847a-9163-4b3d-adb7-8f2865e66cbf", 
     },
     {
         "phone": "13696458853",
-        "token": "2398dfa6-2426-4cb8-8724-d78227ee5b64"
+        "access_token": "2398dfa6-2426-4cb8-8724-d78227ee5b64"
     },
     {
         "phone": "13828737448",
-        "token": "c5f0f9ef-524c-4718-b312-8281052d73a4"
+        "access_token": "c5f0f9ef-524c-4718-b312-8281052d73a4"
     },
     {
         "phone": "18124666606",
-        "token": "47229d41-aa34-4355-acbe-144ee8eb3541"
+        "access_token": "47229d41-aa34-4355-acbe-144ee8eb3541"
     },
     {
         "phone": "13914428326",
-        "token": "d0798263-dab5-4dd7-92be-5eeb5a07f362"
+        "access_token": "d0798263-dab5-4dd7-92be-5eeb5a07f362"
     },
     {
         "phone": "18926804834",
-        "token": "b78bb09b-4cfa-4b3c-9a1a-ba2db7e79689"
+        "access_token": "b78bb09b-4cfa-4b3c-9a1a-ba2db7e79689"
     }
 ]
 
-def vote(id, token, phone):
+def vote(id, access_token, phone):
     headers = {
         "Host": "panservice.mail.wo.cn",
         "Connection": "keep-alive",
@@ -45,15 +45,15 @@ def vote(id, token, phone):
         "User-Agent": "Mozilla/5.0 (Linux; Android 14; PGT-AN10 Build/HONORPGT-AN10; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/137.0.7151.115 Mobile Safari/537.36/woapp LianTongYunPan/5.0.3 (Android 14)",
         "Accept": "application/json, text/plain, */*",
         "source-type": "woapi",
-        "X-YP-Access-Token": token,
+        "X-YP-Access-Token": access_token,
         "Content-Type": "application/json",
-        "token": token,
+        "access_token": access_token,
         "Origin": "https://panservice.mail.wo.cn",
         "X-Requested-With": "com.chinaunicom.bol.cloudapp",
         "Sec-Fetch-Site": "same-origin",
         "Sec-Fetch-Mode": "cors",
         "Sec-Fetch-Dest": "empty",
-        "Referer": "https://panservice.mail.wo.cn/h5/activitymobile/memoryDetail?id=803&clientId=1001000035&activityId=MjQ%3D&token=" + token,
+        "Referer": "https://panservice.mail.wo.cn/h5/activitymobile/memoryDetail?id=803&clientId=1001000035&activityId=MjQ%3D&token=" + access_token,
         "Accept-Encoding": "gzip, deflate, br, zstd",
         "Accept-Language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7"
     }
@@ -76,7 +76,7 @@ def vote(id, token, phone):
 # 创建并启动线程
 threads = []
 for entry in data:
-    thread = threading.Thread(target=vote, args=(803, entry["token"], entry["phone"]))
+    thread = threading.Thread(target=vote, args=(803, entry["access_token"], entry["phone"]))
     threads.append(thread)
     thread.start()
 
