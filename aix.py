@@ -19,7 +19,7 @@ headers = {
     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0",
     "x-client-id": "vue-client"
 }
-url = "https://tx.aixtx001.top/view/shareUserIncome/1950808184285294592"
+url = "https://ld01.aixwebfx001.top/view/shareUserIncome/1950808184285294592"
 data = {
     "\"wjRJWK3baizagc4xo6bR4A": "=\""
 }
